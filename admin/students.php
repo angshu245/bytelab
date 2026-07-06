@@ -63,13 +63,14 @@ while ($row = $students_result->fetch_assoc()) {
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         .header { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
         .header h1 { color: #333; margin-bottom: 10px; }
-        .back-link { display: inline-block; margin-bottom: 15px; color: #667eea; text-decoration: none; }
+        .back-link { display: inline-block; margin-bottom: 15px; color: #667eea; text-decoration: none; font-weight: 600; }
+        .back-link:hover { color: #764ba2; }
         .form-section { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
         .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: 600; color: #333; }
         input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
-        button { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: 600; }
+        button { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: 600; transition: transform 0.2s; }
         button:hover { transform: translateY(-2px); }
         .alert { padding: 15px; border-radius: 5px; margin-bottom: 20px; }
         .alert-error { background: #fee; color: #c33; border: 1px solid #fcc; }
@@ -82,6 +83,12 @@ while ($row = $students_result->fetch_assoc()) {
         .badge { padding: 4px 8px; border-radius: 3px; font-size: 12px; font-weight: 600; }
         .badge-pending { background: #ffeaa7; color: #d63031; }
         .badge-paid { background: #a9e4d4; color: #00b894; }
+        .action-links { display: flex; gap: 10px; }
+        .action-links a { padding: 6px 12px; border-radius: 3px; font-size: 12px; font-weight: 600; text-decoration: none; display: inline-block; transition: all 0.2s; }
+        .edit-link { background: #3498db; color: white; }
+        .edit-link:hover { background: #2980b9; }
+        .delete-link { background: #e74c3c; color: white; }
+        .delete-link:hover { background: #c0392b; }
     </style>
 </head>
 <body>
@@ -159,7 +166,7 @@ while ($row = $students_result->fetch_assoc()) {
                     <tbody>
                         <?php foreach ($students as $student): ?>
                             <tr>
-                                <td><strong><?php echo $student['registration_no']; ?></strong></td>
+                                <td><strong><?php echo htmlspecialchars($student['registration_no']); ?></strong></td>
                                 <td><?php echo htmlspecialchars($student['name']); ?></td>
                                 <td><?php echo htmlspecialchars($student['mobile']); ?></td>
                                 <td><?php echo htmlspecialchars($student['class']); ?></td>
@@ -170,8 +177,10 @@ while ($row = $students_result->fetch_assoc()) {
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="#" style="color: #667eea; text-decoration: none;">Edit</a> | 
-                                    <a href="#" style="color: #e74c3c; text-decoration: none;">Delete</a>
+                                    <div class="action-links">
+                                        <a href="edit_student.php?id=<?php echo $student['id']; ?>" class="edit-link">✏️ Edit</a>
+                                        <a href="delete_student.php?id=<?php echo $student['id']; ?>" class="delete-link" onclick="return confirm('Are you sure you want to delete this student?');">🗑️ Delete</a>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
